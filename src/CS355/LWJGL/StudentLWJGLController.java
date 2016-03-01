@@ -10,6 +10,9 @@ package CS355.LWJGL;
 //If it doesn't appear in this list, you probably don't.
 //Of course, your milage may vary. Don't feel restricted by this list of imports.
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
@@ -28,6 +31,8 @@ import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.util.glu.GLU.gluPerspective;
 
+import java.util.Iterator;
+
 /**
  *
  * @author Brennan Smith
@@ -41,13 +46,19 @@ public class StudentLWJGLController implements CS355LWJGLController
   //It should all be fairly intuitive if you look at those classes.
   //If not, I apologize.
   private WireFrame model = new HouseModel();
-
+  
   //This method is called to "resize" the viewport to match the screen.
   //When you first start, have it be in perspective mode.
   @Override
   public void resizeGL() 
   {
-
+	  glViewport(0, 0, Display.getWidth(), Display.getHeight());
+	  glMatrixMode(GL_PROJECTION);
+	  glLoadIdentity();
+	  gluPerspective((float)60,(float)(Display.getWidth()/Display.getHeight()),(float)1.5,(float)50);
+	  glMatrixMode(GL_MODELVIEW);
+	  glTranslatef(0,-5,-20);
+	  //System.out.println(Display.getHeight());
   }
 
     @Override
@@ -65,7 +76,20 @@ public class StudentLWJGLController implements CS355LWJGLController
     {
         if(Keyboard.isKeyDown(Keyboard.KEY_W)) 
         {
-            System.out.println("You are pressing W!");
+        	glMatrixMode(GL_MODELVIEW);
+        	glTranslatef(0,0,(float).5);
+        } else if(Keyboard.isKeyDown(Keyboard.KEY_S))
+        {
+        	glMatrixMode(GL_MODELVIEW);
+        	glTranslatef(0,0,-(float).5);
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_A))
+        {
+        	glMatrixMode(GL_MODELVIEW);
+        	glTranslatef((float).5,0,0);
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_D))
+        {
+        	glMatrixMode(GL_MODELVIEW);
+        	glTranslatef(-(float).5,0,0);
         }
     }
 
@@ -77,6 +101,14 @@ public class StudentLWJGLController implements CS355LWJGLController
         glClear(GL_COLOR_BUFFER_BIT);
         
         //Do your drawing here.
+        Iterator<Line3D> i = model.getLines();
+        while(i.hasNext()){
+        	Line3D temp = i.next();
+        	glBegin(GL_LINES);
+        	glVertex3d(temp.start.x,temp.start.y,temp.start.z);
+        	glVertex3d(temp.end.x,temp.end.y,temp.end.z);
+        	glEnd();
+        }
     }
     
 }
