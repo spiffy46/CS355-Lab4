@@ -46,6 +46,7 @@ public class StudentLWJGLController implements CS355LWJGLController
   //It should all be fairly intuitive if you look at those classes.
   //If not, I apologize.
   private WireFrame model = new HouseModel();
+  int rotation = 0;
   
   //This method is called to "resize" the viewport to match the screen.
   //When you first start, have it be in perspective mode.
@@ -58,7 +59,6 @@ public class StudentLWJGLController implements CS355LWJGLController
 	  gluPerspective((float)60,(float)(Display.getWidth()/Display.getHeight()),(float)1.5,(float)50);
 	  glMatrixMode(GL_MODELVIEW);
 	  glTranslatef(0,-5,-20);
-	  //System.out.println(Display.getHeight());
   }
 
     @Override
@@ -77,19 +77,64 @@ public class StudentLWJGLController implements CS355LWJGLController
         if(Keyboard.isKeyDown(Keyboard.KEY_W)) 
         {
         	glMatrixMode(GL_MODELVIEW);
-        	glTranslatef(0,0,(float).5);
+        	glTranslatef(-(float)(.5 * Math.sin(rotation*Math.PI/180)),0,(float)(.5 * Math.cos(rotation*Math.PI/180)));
         } else if(Keyboard.isKeyDown(Keyboard.KEY_S))
         {
         	glMatrixMode(GL_MODELVIEW);
-        	glTranslatef(0,0,-(float).5);
+        	glTranslatef((float)(.5 * Math.sin(rotation*Math.PI/180)),0,-(float)(.5 * Math.cos(rotation*Math.PI/180)));
         }else if(Keyboard.isKeyDown(Keyboard.KEY_A))
         {
         	glMatrixMode(GL_MODELVIEW);
-        	glTranslatef((float).5,0,0);
+        	glTranslatef((float)(.5 * Math.cos(rotation*Math.PI/180)),0,(float)(.5 * Math.sin(rotation*Math.PI/180)));
         }else if(Keyboard.isKeyDown(Keyboard.KEY_D))
         {
         	glMatrixMode(GL_MODELVIEW);
-        	glTranslatef(-(float).5,0,0);
+        	glTranslatef(-(float)(.5 * Math.cos(rotation*Math.PI/180)),0,-(float)(.5 * Math.sin(rotation*Math.PI/180)));
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_E))
+        {
+        	glMatrixMode(GL_PROJECTION);
+        	glRotatef(1,0,1,0);
+        	rotation++;
+        	if(rotation == 360){
+        		rotation = 0;
+        	}
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_Q))
+        {
+        	glMatrixMode(GL_PROJECTION);
+        	glRotatef(-1,0,1,0);
+        	rotation--;
+        	if(rotation < 0){
+        		rotation = 359;
+        	}
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_R))
+        {
+        	glMatrixMode(GL_MODELVIEW);
+        	glTranslatef(0,-(float).5,0);
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_F))
+        {
+        	glMatrixMode(GL_MODELVIEW);
+        	glTranslatef(0,(float).5,0);
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_H))
+        {
+        	glMatrixMode(GL_PROJECTION);
+        	glLoadIdentity();
+        	gluPerspective((float)60,(float)(Display.getWidth()/Display.getHeight()),(float)1.5,(float)50);
+        	glMatrixMode(GL_MODELVIEW);
+        	glLoadIdentity();
+        	glTranslatef(0,-5,-20);
+        	rotation = 0;
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_P))
+        {
+        	//TODO Needs to be fixed
+        	glMatrixMode(GL_PROJECTION);
+        	//glLoadIdentity();
+        	gluPerspective((float)60,(float)(Display.getWidth()/Display.getHeight()),(float)1.5,(float)50);
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_O))
+        {
+        	//TODO needs to be implemented
+        	glMatrixMode(GL_PROJECTION);
+        	//glLoadIdentity();
+        	glOrtho(-10,10,-10,10,1.5,50);
         }
     }
 
