@@ -125,16 +125,22 @@ public class StudentLWJGLController implements CS355LWJGLController
         	rotation = 0;
         }else if(Keyboard.isKeyDown(Keyboard.KEY_P))
         {
-        	//TODO Needs to be fixed
+        	rotation = 0;
         	glMatrixMode(GL_PROJECTION);
-        	//glLoadIdentity();
+        	glLoadIdentity();
         	gluPerspective((float)60,(float)(Display.getWidth()/Display.getHeight()),(float)1.5,(float)50);
+        	glMatrixMode(GL_MODELVIEW);
+        	glLoadIdentity();
+        	glTranslatef(0,-5,-20);
         }else if(Keyboard.isKeyDown(Keyboard.KEY_O))
         {
-        	//TODO needs to be implemented
+        	rotation = 0;
         	glMatrixMode(GL_PROJECTION);
-        	//glLoadIdentity();
+        	glLoadIdentity();
         	glOrtho(-10,10,-10,10,1.5,50);
+        	glMatrixMode(GL_MODELVIEW);
+        	glLoadIdentity();
+        	glTranslatef(0,-5,-20);
         }
     }
 
